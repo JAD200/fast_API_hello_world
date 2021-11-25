@@ -32,6 +32,6 @@ def create_person(person: Person = Body(...)):#* Los "..." significan que el par
 @app.get('/person/detail')
 def show_person(
     name: Optional[str] = Query(None, min_length=1, max_length=50),
-    age: str = Query(...)
+    age: int = Query(...)
 ):
     return {name: age}
