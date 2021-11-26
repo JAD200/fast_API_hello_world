@@ -54,7 +54,7 @@ def show_person(
         ...,
         gt=0,
         title='Person ID',
-        description='This is the person ID'
+        description='This shows person ID'
         )
 ):
     return {person_id: 'It exists!'}
