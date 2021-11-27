@@ -18,51 +18,69 @@ app = FastAPI()
 # Models
 
 class HairColor(Enum):
-    white = 'white'
-    brown = 'brown'
     black = 'black'
     blonde = 'blonde'
+    brown = 'brown'
     red = 'red'
+    white = 'white'
 
 class Location(BaseModel):
     city: str = Field(
         ...,
         min_length=1,
-        max_length=58
+        max_length=58,
+        example='La Plata'
     )
     state: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Buenos Aires'
     )
     country: str = Field(
         ...,
         min_length=1,
-        max_length=21
+        max_length=21,
+        example='Argentina'
     )
 
 class Person(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Juan'
         )
     last_name: str = Field(
         ...,
         min_length=1,
-        max_length=50
+        max_length=50,
+        example='Di Pasquo'
         )
     age: int = Field(
         ...,
         gt=0,
-        le=115
+        le=115,
+        example=21
     )
     hair_color: Optional[HairColor] = Field(default=None)
-    is_married: Optional[bool] = Field(default=None)
-    email: EmailStr
-    website: HttpUrl
-    card_name: constr(strip_whitespace=True, min_length=1)
-    card_number: PaymentCardNumber
+    is_married: Optional[bool] = Field(default=None, example=False)
+    email: Optional[EmailStr] = Field(default=None, example='example@gmail.com')
+    website: Optional[HttpUrl] = Field(example='http://google.com')
+    card_name: constr(strip_whitespace=True, min_length=1) = Field(example='Juan Agustin Di Pasquo')
+    card_number: Optional[PaymentCardNumber] = Field(example='4000000000000002')#? This number is for Visa cards
+
+#*   This is the same as the parameter "example" from class Field
+    # class Config():
+    #     schema_extra = {
+    #         "example": {
+    #             "first_name": "Juan",
+    #             "last_name": "Di Pasquo",
+    #             "age": 21,
+    #             "hair_color": "brown",
+    #             "is_married": False
+    #         }
+    #     }
 
 @app.get('/')
 def home():
