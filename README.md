@@ -8,5 +8,5 @@
 
 ------------
 
-  [![Logo python](https://i.imgur.com/3GmPd7O.png")](https://www.python.org/)
+  [![Logo python](https://i.imgur.com/fDkhooA.png")](https://www.python.org/)
 ####  Hecho por [Juan Di Pasquo](https://twitter.com/JADiPasquo "Juan Di Pasquo")
