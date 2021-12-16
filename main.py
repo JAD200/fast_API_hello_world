@@ -44,7 +44,7 @@ class Location(BaseModel):
         example='Argentina'
     )
 
-class Person(BaseModel):
+class PersonBase(BaseModel):
     first_name: str = Field(
         ...,
         min_length=1,
@@ -65,11 +65,13 @@ class Person(BaseModel):
     )
     hair_color: Optional[HairColor] = Field(default=None)
     is_married: Optional[bool] = Field(default=None, example=False)
-    password: str = Field(..., min_length=8)
     # email: Optional[EmailStr] = Field(default=None, example='example@gmail.com')
     # website: Optional[HttpUrl] = Field(example='http://google.com')
     # card_name: constr(strip_whitespace=True, min_length=1) = Field(example='Juan Agustin Di Pasquo')
     # card_number: Optional[PaymentCardNumber] = Field(example='4000000000000002')#? This number is for Visa cards
+
+class Person(PersonBase):
+    password: str = Field(..., min_length=8)
 
 #*   This is the same as the parameter "example" from class Field
     # class Config():
@@ -83,27 +85,9 @@ class Person(BaseModel):
     #         }
     #     }
 
-class PersonOut(BaseModel):
-    first_name: str = Field(
-        ...,
-        min_length=1,
-        max_length=50,
-        example='Juan'
-        )
-    last_name: str = Field(
-        ...,
-        min_length=1,
-        max_length=50,
-        example='Di Pasquo'
-        )
-    age: int = Field(
-        ...,
-        gt=0,
-        le=115,
-        example=21
-    )
-    hair_color: Optional[HairColor] = Field(default=None)
-    is_married: Optional[bool] = Field(default=None, example=False)
+class PersonOut(PersonBase):
+    pass
+
 
 @app.get('/')
 def home():
