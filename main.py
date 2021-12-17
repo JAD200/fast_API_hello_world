@@ -8,11 +8,10 @@ from pydantic import Field
 # from pydantic import EmailStr, HttpUrl
 # from pydantic.types import PaymentCardNumber, constr
 
-
 # FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Query, Path
+from fastapi import Body, Query, Path, Form
 
 app = FastAPI()
 
@@ -89,6 +88,10 @@ class Person(PersonBase):
 class PersonOut(PersonBase):
     pass
 
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example='Miguel2021')
+    message: str = Field(default='Login Succesful')
+
 
 @app.get(
     path='/',
@@ -102,7 +105,8 @@ def home():
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED
     )
-def create_person(person: Person = Body(...)):#* Los "..." significan que el parametro es OBLIGATORIO
+def create_person(
+    person: Person = Body(...)):#* Los "..." significan que el parametro es OBLIGATORIO
     return person
 
 # Validaciones: Query Parameters
@@ -161,8 +165,15 @@ def update_person(
         example=123
     ),
     person: Person = Body(...),
-    Location: Location = Body(...)
-):
+    Location: Location = Body(...)):
     results = person.dict()
     results.update(Location.dict())
     return results
+
+@app.post(
+    path='./login',
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK
+)
+def login(username: str = Form(...), password: str = Form(...)):
+    return LoginOut(username=username)
