@@ -11,7 +11,7 @@ from pydantic import EmailStr, HttpUrl
 # FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Query, Path, Form, Header, Cookie
+from fastapi import Body, Query, Path, Form, Header, Cookie, File, UploadFile
 
 app = FastAPI()
 
@@ -170,7 +170,7 @@ def update_person(
     results.update(Location.dict())
     return results
 
-#   Forms
+# Forms
 
 @app.post(
     path='/login',
@@ -180,7 +180,7 @@ def update_person(
 def login(username: str = Form(...), password: str = Form(...)):
     return LoginOut(username=username)
 
-#   Cookies and Headers parameters
+# Cookies and Headers parameters
 
 @app.post(
     path='/contact',
@@ -206,3 +206,17 @@ def contact(
     ads: Optional[str] = Cookie(default=None)
 ):
     return user_agent
+
+# Files
+
+@app.post(
+    path='/post-image'
+)
+def post_image(
+    image: UploadFile = File(...)
+):
+    return {
+        'Filename': image.filename,
+        'Format': image.content_type,
+        'Size(kb)': round(len(image.file.read())/1024, ndigits=2)
+    }
