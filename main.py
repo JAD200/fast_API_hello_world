@@ -140,7 +140,8 @@ def create_person(person: Person = Body(...)):#* Los "..." significan que el par
     path='/person/detail',
     status_code=status.HTTP_200_OK,
     tags=['Persons'],
-    summary='Get person details'
+    summary='Get person details',
+    deprecated=True
     )
 def show_person(
     name: Optional[str] = Query(
